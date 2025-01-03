@@ -22,3 +22,5 @@ Constraints:
 
 The number of nodes in the tree is in the range [1, 104].
 -100 <= Node.val <= 100
+
+[543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/description/)

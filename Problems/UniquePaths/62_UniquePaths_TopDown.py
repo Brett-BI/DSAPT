@@ -27,7 +27,7 @@ def uniquePaths(m: int, n: int) -> int:
 answer = uniquePaths(3, 7)
 print(answer)
 
-# T: O(m*n + m*n) because m and n can be different values
+# T: O(m*n) because m and n can be different values
 # technically, it's O(2(m*n)) but the constant is ignored
 # S: O(m*n) because the board creation is the only thing that
 # requires space.
