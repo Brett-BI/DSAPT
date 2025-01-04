@@ -1,3 +1,13 @@
+# Time Complexity
+## Common times
+
+O(log n)
+- Logarithmic time
+- As time increases linearly, n goes up exponentially
+- Ex.: 1 second for 10 elements, 2 seconds for 100 elements
+
+## Ignoring Factors
+
 When Can a Factor Be Ignored?
 Asymptotic Analysis:
 

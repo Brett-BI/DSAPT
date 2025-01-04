@@ -52,5 +52,8 @@ https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
 Balance Parentheses
 https://leetcode.com/problems/valid-parentheses/description/ 
 
+Binary Search
+https://leetcode.com/problems/binary-search/description/
+
 Doc:
 https://docs.google.com/document/d/1QlmYeArI1OaCllVVxhrm6rSfDcjx7cq-/edit 
