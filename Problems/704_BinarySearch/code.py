@@ -19,9 +19,9 @@ class Solution:
             if t == target:
                 return mid
             elif t < target:
-                lowPointer = (mid) + 1 # low index is the previous mid point
+                lowPointer = mid + 1 # low index is the previous mid point
             else:
-                highPointer = (mid) - 1 # high index is the previous mid point
+                highPointer = mid - 1 # high index is the previous mid point
 
         return -1
     

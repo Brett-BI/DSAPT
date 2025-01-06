@@ -26,6 +26,7 @@ https://leetcode.com/problems/clone-graph/description/
 
 Almost Palindrome
 Stock Price Tracker
+https://leetcode.com/problems/stock-price-fluctuation/description/ 
 City Generator
 Server Autocomplete
 Add range sum in a binary search tree
@@ -41,7 +42,7 @@ Print Tree by Columns
 Local Minimum
 Moving average
 Next Permutation
-Sort Using Custom Alphabet
+Sort Using Custom Alphabet - 953?
 
 Top K frequent elements
 https://leetcode.com/problems/top-k-frequent-elements/description/

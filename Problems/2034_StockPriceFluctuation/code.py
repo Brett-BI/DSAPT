@@ -1,0 +1,131 @@
+from typing import List
+from sortedcontainers import SortedDict, SortedList
+
+
+class StockPrice:
+
+    def __init__(self):
+        # self.stockRecords: List[List[int]] = []
+        self.records: SortedDict[int, int] = SortedDict()
+        self.pricesSDict: SortedDict[int] = SortedDict()
+        self.pricesSorted: SortedList[int] = SortedList()
+        self.recordsDict: dict[int, int] = {} # dictionary for all records, ts is key
+        self.latestRecordTimestamp = 0
+        self.maxValueTimestamp = 0
+        self.minValueTimestamp = 0
+
+        # maybe change this to an ordered dictionary
+        # then figure out to append/update in the right order
+        # Use SortedDict from SortedContainers
+        # Ops are in O(logn); uses balanced binary tree under the hood
+        
+
+    def update(self, timestamp: int, price: int) -> None:
+        # this automatically updates values as they're sent in
+        #self.records[timestamp] = price
+
+        self.recordsDict[timestamp] = price
+
+        # update the current
+        # we're never removing a timestamp, so do a simple comparison
+        if timestamp > self.latestRecordTimestamp:
+            self.latestRecordTimestamp = timestamp
+
+        # update/set the maximum price
+        # check if price is in the dictionary already
+
+        # update the minimum
+
+
+    def current(self) -> int:
+        print(list(self.records.keys()))
+        print(self.records)
+        return self.records[list(self.records.keys())[-1]]
+        # return self.records[self.latestRecordTimestamp]
+
+        # this sort is too slow
+        # return self.records[sorted(list(self.records.keys()))[-1]]
+        # return self.stockRecords[-1][1]
+
+
+    def maximum(self) -> int:
+        max: int = 0
+        for key in self.records.keys():
+            if self.records[key] > max:
+                max = self.records[key]
+            
+        # return self.records[self.maxValueTimestamp]
+        return max
+        # max: int = 0
+        # for record in self.stockRecords:
+        #     if record[1] > max:
+        #         max = record[1]
+        
+        # return max
+
+
+    def minimum(self) -> int:
+        min: int = self.maximum()
+        for key in self.records.keys():
+            if self.records[key] < min:
+                min = self.records[key]
+            
+        # return self.records[self.minValueTimestamp]
+        return min
+        # min: int = 0
+        # for record in self.stockRecords:
+        #     if record[1] < min:
+        #         min = record[1]
+
+        # return min
+    
+
+    def showAllRecords(self) -> List[List[int]]:
+        return self.records
+
+
+# Your StockPrice object will be instantiated and called as such:
+# obj = StockPrice()
+# obj.update(timestamp,price)
+# param_2 = obj.current()
+# param_3 = obj.maximum()
+# param_4 = obj.minimum()
+
+
+# obj = StockPrice()
+# obj.update(1, 10)
+# print(obj.showAllRecords())
+# obj.update(2, 5)
+# print(obj.showAllRecords())
+# c1 = obj.current()
+# print(c1)
+# m1 = obj.maximum()
+# print(m1)
+# obj.update(1, 3)
+# print(obj.showAllRecords())
+# param_3 = obj.maximum()
+# print(param_3)
+# obj.update(4, 2)
+# print(obj.showAllRecords())
+# param_4 = obj.minimum()
+# print(param_4)
+
+s = StockPrice()
+# s.update(1, 10)
+# print(s.showAllRecords())
+# s.update(2, 5)
+# print(s.showAllRecords())
+# print(s.current())
+# print(s.maximum())
+# s.update(1,3)
+# print(s.showAllRecords())
+# print(s.maximum())
+# s.update(4, 2)
+# print(s.showAllRecords())
+# print(s.minimum())
+s.update(38,2308)
+s.update(47,7876)
+s.update(58,1866)
+s.update(43,6141)
+s.update(36,3192)
+print(s.current())
