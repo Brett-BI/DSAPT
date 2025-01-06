@@ -7,8 +7,7 @@ class StockPrice:
     def __init__(self):
         # self.stockRecords: List[List[int]] = []
         self.records: SortedDict[int, int] = SortedDict()
-        self.pricesSDict: SortedDict[int] = SortedDict()
-        self.pricesSorted: SortedList[int] = SortedList()
+        self.pricesSorted: SortedDict[int] = SortedDict()
         self.recordsDict: dict[int, int] = {} # dictionary for all records, ts is key
         self.latestRecordTimestamp = 0
         self.maxValueTimestamp = 0
@@ -24,23 +23,32 @@ class StockPrice:
         # this automatically updates values as they're sent in
         #self.records[timestamp] = price
 
-        self.recordsDict[timestamp] = price
-
         # update the current
         # we're never removing a timestamp, so do a simple comparison
         if timestamp > self.latestRecordTimestamp:
             self.latestRecordTimestamp = timestamp
 
-        # update/set the maximum price
-        # check if price is in the dictionary already
+        # if this timestamp already has a record associated with it
+        if timestamp in self.recordsDict:
+            old = self.recordsDict[timestamp] # find the old price
+            self.pricesSorted[old] = -1 # this is falsey
 
-        # update the minimum
+            if self.pricesSorted[old] == -1: # if the value is falsey (the -1 from above)
+                del self.pricesSorted[old]
+
+        self.recordsDict[timestamp] = price
+
+        if price in self.pricesSorted:
+            self.pricesSorted[price] += 1
+        else:
+            self.pricesSorted[price] = 1
+
 
 
     def current(self) -> int:
         print(list(self.records.keys()))
         print(self.records)
-        return self.records[list(self.records.keys())[-1]]
+        return self.recordsDict[self.latestRecordTimestamp]
         # return self.records[self.latestRecordTimestamp]
 
         # this sort is too slow
@@ -49,13 +57,14 @@ class StockPrice:
 
 
     def maximum(self) -> int:
-        max: int = 0
-        for key in self.records.keys():
-            if self.records[key] > max:
-                max = self.records[key]
+        # max: int = 0
+        # for key in self.records.keys():
+        #     if self.records[key] > max:
+        #         max = self.records[key]
             
         # return self.records[self.maxValueTimestamp]
-        return max
+        print(self.pricesSorted.keys())
+        return list(self.pricesSorted.keys())[-1]
         # max: int = 0
         # for record in self.stockRecords:
         #     if record[1] > max:
@@ -65,13 +74,13 @@ class StockPrice:
 
 
     def minimum(self) -> int:
-        min: int = self.maximum()
-        for key in self.records.keys():
-            if self.records[key] < min:
-                min = self.records[key]
+        # min: int = self.maximum()
+        # for key in self.records.keys():
+        #     if self.records[key] < min:
+        #         min = self.records[key]
             
         # return self.records[self.minValueTimestamp]
-        return min
+        return list(self.pricesSorted.keys())[0]
         # min: int = 0
         # for record in self.stockRecords:
         #     if record[1] < min:
@@ -92,23 +101,23 @@ class StockPrice:
 # param_4 = obj.minimum()
 
 
-# obj = StockPrice()
-# obj.update(1, 10)
-# print(obj.showAllRecords())
-# obj.update(2, 5)
-# print(obj.showAllRecords())
-# c1 = obj.current()
-# print(c1)
-# m1 = obj.maximum()
-# print(m1)
-# obj.update(1, 3)
-# print(obj.showAllRecords())
-# param_3 = obj.maximum()
-# print(param_3)
-# obj.update(4, 2)
-# print(obj.showAllRecords())
-# param_4 = obj.minimum()
-# print(param_4)
+obj = StockPrice()
+obj.update(1, 10)
+print(obj.showAllRecords())
+obj.update(2, 5)
+print(obj.showAllRecords())
+c1 = obj.current()
+print(c1)
+m1 = obj.maximum()
+print(m1)
+obj.update(1, 3)
+print(obj.showAllRecords())
+param_3 = obj.maximum()
+print(param_3)
+obj.update(4, 2)
+print(obj.showAllRecords())
+param_4 = obj.minimum()
+print(param_4)
 
 s = StockPrice()
 # s.update(1, 10)
@@ -123,9 +132,11 @@ s = StockPrice()
 # s.update(4, 2)
 # print(s.showAllRecords())
 # print(s.minimum())
-s.update(38,2308)
-s.update(47,7876)
-s.update(58,1866)
-s.update(43,6141)
-s.update(36,3192)
-print(s.current())
+# s.update(38,2308)
+# s.update(47,7876)
+# s.update(58,1866)
+# s.update(43,6141)
+# s.update(36,3192)
+# print(s.current())
+# print(s.maximum())
+# print(s.minimum())
