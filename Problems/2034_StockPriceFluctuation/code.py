@@ -5,16 +5,10 @@ from sortedcontainers import SortedDict, SortedList
 class StockPrice:
 
     def __init__(self):
-        # self.stockRecords: List[List[int]] = []
-        self.records: SortedDict[int, int] = SortedDict()
-        self.pricesSorted: SortedDict[int] = SortedDict()
+        self.pricesSorted: SortedDict[int] = SortedDict() # just for prices; {4058, 1}
         self.recordsDict: dict[int, int] = {} # dictionary for all records, ts is key
         self.latestRecordTimestamp = 0
-        self.maxValueTimestamp = 0
-        self.minValueTimestamp = 0
 
-        # maybe change this to an ordered dictionary
-        # then figure out to append/update in the right order
         # Use SortedDict from SortedContainers
         # Ops are in O(logn); uses balanced binary tree under the hood
         
@@ -31,9 +25,9 @@ class StockPrice:
         # if this timestamp already has a record associated with it
         if timestamp in self.recordsDict:
             old = self.recordsDict[timestamp] # find the old price
-            self.pricesSorted[old] = -1 # this is falsey
+            self.pricesSorted[old] -= 1 # this is falsey
 
-            if self.pricesSorted[old] == -1: # if the value is falsey (the -1 from above)
+            if not self.pricesSorted[old]: # if the value is falsey (the -1 from above)
                 del self.pricesSorted[old]
 
         self.recordsDict[timestamp] = price

@@ -3,32 +3,6 @@ from typing import List
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        # opening: List[str] = []
-        # closing: List[str] = []
-        # opposite: List[str] = []
-
-        # for c in s:
-        #     if c == "(" or c == "{" or c == "[":
-        #         opening.append(c)
-        #     else:
-        #         closing.append(c)
-
-        # # figure out if they match
-        # for c in closing:
-        #     if c == ")":
-        #         opposite.append("(")
-            
-        #     if c == "}":
-        #         opposite.append("{")
-
-        #     if c == "]":
-        #         opposite.append("[")
-            
-        # if opening == opposite:
-        #     return True
-        # else:
-        #     return False
-        
         while len(s) > 0:
             print("For s: {}".format(s))
             lastOpenParen: int = 0
@@ -70,5 +44,5 @@ s = Solution()
 print(s.isValid("()"))
 print(s.isValid("()[]{}"))
 print(s.isValid("(]"))
-print(s.isValid("([])"))
+print(s.isValid("([])")) 
 print(s.isValid("["))

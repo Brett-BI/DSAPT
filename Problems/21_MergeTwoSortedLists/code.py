@@ -19,7 +19,7 @@ class Solution:
             if list1.val <= list2.val:
                 # set the next node because we know the order
                 previousNode.next = list1
-                list1 = list1.next
+                list1 = list1.next 
             else:
                 # set the next node because we know the order
                 previousNode.next = list2
@@ -34,10 +34,5 @@ class Solution:
 
         # return the answer
         return firstNode.next
-    
-'''
-ListNode(
-    val: -1
-    next: ListNode([1,2,4])
-)
-'''
+
+        # T: O(N + M) where N is list1 + list2 and M is firstNode + previousNode
