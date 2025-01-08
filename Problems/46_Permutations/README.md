@@ -27,3 +27,4 @@ All the integers of nums are unique.
 
 # Topics/References
 - Recursion
+- Backtracking

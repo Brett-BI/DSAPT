@@ -1,6 +1,5 @@
 from typing import List
 
-
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         answer = []
@@ -30,6 +29,9 @@ class Solution:
 
         backtracking([], 0, 0)
         return answer
+    
+        # T: O(2^N) because we're trying "(" and ")" for every N
+        # S: O(N) because we're just accounting for the recursive calls in this algo
     
 s = Solution()
 print(s.generateParenthesis(3))
