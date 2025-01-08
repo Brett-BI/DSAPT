@@ -15,3 +15,7 @@ Output: ["()"]
 Constraints:
 
 1 <= n <= 8
+
+# Topics
+- Recursion
+- Backtracking
