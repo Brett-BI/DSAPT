@@ -14,8 +14,12 @@ class Solution:
         s: List[TreeNode] = []
         ans: int = 0
 
+        sum
+
         if root:
             s.append(root)
+
+        import heapq
 
         while s:
             currentNode = s.pop()
