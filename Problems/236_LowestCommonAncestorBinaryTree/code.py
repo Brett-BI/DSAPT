@@ -1,4 +1,5 @@
 # Definition for a binary tree node.
+from collections import deque
 from typing import Any, Optional
 
 
@@ -58,7 +59,54 @@ class Solution:
         # return the match we have (because a node can be a descendant of itself)
         return l or r
 
-    def LCA2(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode': 
+    def LCAIterative(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+        # use a queue to work through each of the nodes in the tree
+        q = deque([root])
+
+        # use a dictionary to keep track of the node and its parent node
+        # key is the current node, value is its parent
+        parent = {root: None}
+
+        # while there's something in the queue, evaluate each item
+        # this is only necessary to get p and q in the parent dictionary
+        while q:
+            # current working node; remove the left-most element (first) from the queue
+            currentNode = q.popleft()
+
+            # if it has a left and/or right child, append the child to the queue
+            # then add the node and its parent to the parent dictionary
+            if currentNode.left:
+                q.append(currentNode.left)
+                parent[currentNode.left] = currentNode
+
+            if currentNode.right:
+                q.append(currentNode.right)
+                parent[currentNode.right] = currentNode
+            
+            # stop processing the queue when we've found p and q
+            if p in parent and q in parent:
+                break
+        
+        # use a set to keep track of ancestors; this has an O(1) lookup time
+        # behind the scenes, a set is implemented as a hash table - a key with no value
+        ancestors = set()
+
+        # while p exists (p is going to change as we bubble up the parent hierarchy)
+        while p:
+            # add current p
+            ancestors.add(p)
+            # set new p to the previous p's parent node
+            p = parent[p]
+
+        # while q exists (we're going to exhaust all elements with q as the parent just like
+        # we did with p), bubble up its parent and add to ancestors
+        # as soon as q is in the ancestors set, return
+        while q: 
+            if q in ancestors:
+                return q
+            q = parent[q]
+
+    def LCARecursive(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode': 
         '''
             Our base case(s) are as follows (this is how we know we've found the LCA):
                 1. left == True and right == True: this means that the current node's children contain p and q; this 
