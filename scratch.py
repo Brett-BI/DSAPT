@@ -1,56 +1,222 @@
-# unique paths
+from collections import Counter, deque
+import heapq
+from typing import List, Optional
 
-from typing import List
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class NestedInteger:
+   def __init__(self, value=None):
+       """
+       If value is not specified, initializes an empty list.
+       Otherwise initializes a single integer equal to value.
+       """
+
+   def isInteger(self):
+       """
+       @return True if this NestedInteger holds a single integer, rather than a nested list.
+       :rtype bool
+       """
+
+   def add(self, elem):
+       """
+       Set this NestedInteger to hold a nested list and adds a nested integer elem to it.
+       :rtype void
+       """
+
+   def setInteger(self, value):
+       """
+       Set this NestedInteger to hold a single integer equal to value.
+       :rtype void
+       """
+
+   def getInteger(self):
+       """
+       @return the single integer that this NestedInteger holds, if it holds a single integer
+       Return None if this NestedInteger holds a nested list
+       :rtype int
+       """
+
+   def getList(self):
+       """
+       @return the nested list that this NestedInteger holds, if it holds a nested list
+       Return None if this NestedInteger holds a single integer
+       :rtype List[NestedInteger]
+       """
 
 class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        def dive(item: NestedInteger, depth: int) -> None:
+            nonlocal ans
+            # base case
+            if item.isInteger():
+                ans += item.getInteger() * depth
+            else:
+                for i in item.getList():
+                    dive(i, depth + 1)
 
-    def __init__(self):
-        # Variable to store LCA node.
-        self.ans = None
+        ans: int = 0
+        
+        for n in nestedList:
+            dive(n, 1)
 
-    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-        '''
-            Our base case(s) are as follows (this is how we know we've found the LCA):
-                1. left == True and right == True: this means that the current node's children contain p and q; this 
-                   will return the currentNode the first time this occurs (line 39)
-                2. currentNode == p/q AND (left == True or right == True): this means that the current node is the top
-                   of the branch and the other match, p or q, is in the same branch. 
-        '''
-        def recurse_tree(current_node: TreeNode) -> bool:
+        return ans
 
-            # If reached the end of a branch, return False.
-            if not current_node:
-                return False
+    def topKFrequentCounter(self, nums: List[int], k: int) -> List[int]:
+        c = Counter([nums])
 
-            # Try left...
-            left = recurse_tree(current_node.left)
+        if len(nums) == k:
+            return nums
+        
+        return heapq.nlargest(k, c.keys(), key=c.get)
 
-            # Try right
-            right = recurse_tree(current_node.right)
+    def uniquePathsTD(self, m: int, n: int) -> int:
+        board = [[1] * n for _ in range(m)]
 
-            # Only get here when we get to the end of the branch
-            # Set found = True if it matches p or q
-            found = current_node == p or current_node == q
+        for i in range(1, m):
+            for j in range(1, n):
+                board[i][j] = board[i - 1][j] + board[i][j - 1]
 
-            # If current node is p or q and we have found p or q in another downstream node
-            # return the current node because it's the LCA
-            if (found and left) or (found and right) or (left and right):
-                self.ans = current_node
+        return board[m - 1][n - 1]
 
-            # Otherwise return true because the current node or a downstream node is p or q
-            # So this needs to bubble up the recursive call stack for evaluation
-            return found or left or right
+    def uniquePathsBU(self, m: int, n: int) -> int:
+        board = [[1] * n for _ in range(m)]
 
-        # Traverse the tree
-        recurse_tree(root)
-        return self.ans
+        for i in range(m - 2, -1, -1):
+            for j in range(n - 2, -1, -1):
+                board[i][j] = board[i + 1][j] + board[i][j + 1]
+
+        return board[0][0]
+
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(curr) -> None:
+            if len(curr) == len(nums):
+                answer.append(curr[:])
+                return
+            
+            for n in nums:
+                if n not in curr:
+                    curr.append(n)
+                    backtrack(curr)
+                    curr.pop()
+
+        answer = []
+        backtrack([])
+        return answer
         
 
-# T: O(N/2 + N) -> O(N) - at worst, we're evaluating N/2 + N - l
-# S: O(1) - constant space requirement
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        def backtrack(curr, nextItem):
+            if len(curr) == k:
+                answer.append(curr[:])
+                return
+            
+            for i in range(nextItem, n + 1):
+                if i not in curr:
+                    curr.append(i)
+                    backtrack(curr, i + 1)
+                    curr.pop()
+        
+        answer = []
+
+        backtrack([], 1)
+
+        return answer
+        
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(curr, lowerBound, size):
+            if len(curr) == size:
+                answer.append(curr[:])
+                return
+            
+            for n in range(lowerBound, len(nums)):
+                if nums[n] not in curr:
+                    curr.append(nums[n])
+                    backtrack(curr, n + 1, size)
+                    curr.pop()
+
+        answer = []
+
+        for i in len(nums):
+            backtrack([], 0, i)
+
+        return answer
     
-s = Solution()
-print(s.validPalindrome("aba"))
-print(s.validPalindrome("abca"))
-print(s.validPalindrome("abc"))
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        def traverse(node: Optional[TreeNode]) -> None:
+            if not node:
+                return
+            else:
+                if node.val >= low and node.val <= high:
+                    ans += node.val
+
+                traverse(node.left)
+                traverse(node.right)
+        
+        ans: int = 0
+
+        traverse(root)
+
+        return ans
+
+    def lcaRec(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+        def traverse(node: Optional[TreeNode]) -> bool:
+            nonlocal ans
+            currentNodeMatch: bool = False
+
+            if not node:
+                return False
+            
+            lFind = traverse(node.left)
+            rFind = traverse(node.right)
+
+            if node == p or node == q:
+                currentNodeMatch = True
+
+            if (currentNodeMatch and (lFind or rFind)) or (lFind and rFind):
+                ans = node
+                return True
+            
+            if currentNodeMatch or lFind or rFind:
+                return True
+            else:
+                return False
+
+        ans: TreeNode = None
+
+        traverse(root)
+
+        return ans
+    
+    def lcaStack(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+        nodeQueue = deque([root])
+        parentDict = {root: None}
+
+        while nodeQueue:
+            curr = nodeQueue.popleft()
+
+            if curr.left:
+                nodeQueue.append(curr.left)
+                parentDict[curr.left] = curr
+
+            if curr.right:
+                nodeQueue.append(curr.right)
+                parentDict[curr.right] = curr
+
+            if p in parentDict and q in parentDict:
+                break
+
+        ancestors = set()
+
+        while p:
+            ancestors.add(p)
+            p = parentDict[p]
+
+        while q:
+            if q in ancestors:
+                return q
+            q = parentDict[q]
