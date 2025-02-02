@@ -1,0 +1,2 @@
+# QuickSort
+This is a divide-and-conquer way of sorting elements in a collection. Quickly, apparently. It works by partitioning the collection recursively using a pivot until the resulting collections are a single element. The algorithm then combines all parts into a sorted collection.

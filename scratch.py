@@ -1,4 +1,4 @@
-from collections import Counter, deque
+from collections import Counter, defaultdict, deque
 import heapq
 from typing import List, Optional
 
@@ -50,26 +50,27 @@ class NestedInteger:
 
 class Solution:
     def depthSum(self, nestedList: List[NestedInteger]) -> int:
-        def dive(item: NestedInteger, depth: int) -> None:
-            nonlocal ans
-            # base case
-            if item.isInteger():
-                ans += item.getInteger() * depth
-            else:
-                for i in item.getList():
-                    dive(i, depth + 1)
+        # for every NestedInteger, add product of its val and depth to ans
+        def dive(nestedInt: NestedInteger, depth: int):
+            nonlocal ans 
 
-        ans: int = 0
+            if nestedInt.isInteger():
+                ans += nestedInt.getInteger() * depth
+                return
+            else:
+                for n in nestedInt:
+                    dive(n, depth + 1)
         
+        ans: int = 0
         for n in nestedList:
             dive(n, 1)
 
         return ans
 
     def topKFrequentCounter(self, nums: List[int], k: int) -> List[int]:
-        c = Counter([nums])
+        c = Counter(nums)
 
-        if len(nums) == k:
+        if len(nums) <= k:
             return nums
         
         return heapq.nlargest(k, c.keys(), key=c.get)
@@ -91,11 +92,14 @@ class Solution:
                 board[i][j] = board[i + 1][j] + board[i][j + 1]
 
         return board[0][0]
+        
 
     def permute(self, nums: List[int]) -> List[List[int]]:
-        def backtrack(curr) -> None:
+        def backtrack(curr: List[int]):
+            nonlocal ans
+
             if len(curr) == len(nums):
-                answer.append(curr[:])
+                ans.append(curr[:])
                 return
             
             for n in nums:
@@ -103,32 +107,38 @@ class Solution:
                     curr.append(n)
                     backtrack(curr)
                     curr.pop()
+        
+        ans: List[List[int]] = []
 
-        answer = []
         backtrack([])
-        return answer
+
+        return ans
         
 
     def combine(self, n: int, k: int) -> List[List[int]]:
-        def backtrack(curr, nextItem):
+        def backtrack(curr: List[int], lowerBound: int):
+            nonlocal ans 
+
             if len(curr) == k:
-                answer.append(curr[:])
+                ans.append(curr[:])
                 return
             
-            for i in range(nextItem, n + 1):
-                if i not in curr:
+            for i in range(lowerBound, n + 1):
+                if i not in curr: 
                     curr.append(i)
                     backtrack(curr, i + 1)
                     curr.pop()
         
-        answer = []
+        ans: List[List[int]]
 
         backtrack([], 1)
 
-        return answer
+        return ans
         
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        def backtrack(curr, lowerBound, size):
+        def backtrack(curr: List[int], lowerBound: int, size: int):
+            nonlocal answer
+
             if len(curr) == size:
                 answer.append(curr[:])
                 return
@@ -139,38 +149,41 @@ class Solution:
                     backtrack(curr, n + 1, size)
                     curr.pop()
 
-        answer = []
+        answer: List[List[int]] = []
 
-        for i in len(nums):
+        for i in range(len(nums) + 1):
             backtrack([], 0, i)
-
+        
         return answer
     
     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
-        def traverse(node: Optional[TreeNode]) -> None:
-            if not node:
+        # traverse all nodes, add values to answer if low <= val >= high
+        def traverse(currentNode: TreeNode):
+            nonlocal s
+            
+            if not currentNode:
                 return
-            else:
-                if node.val >= low and node.val <= high:
-                    ans += node.val
+            
+            if currentNode.val >= low and currentNode.val <= high:
+                s += currentNode.val
 
-                traverse(node.left)
-                traverse(node.right)
+            traverse(currentNode.left)
+            traverse(currentNode.right)
         
-        ans: int = 0
+        s: int = 0
 
         traverse(root)
 
-        return ans
+        return s
 
     def lcaRec(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-        def traverse(node: Optional[TreeNode]) -> bool:
+        def traverse(node: TreeNode) -> bool:
             nonlocal ans
             currentNodeMatch: bool = False
 
             if not node:
                 return False
-            
+
             lFind = traverse(node.left)
             rFind = traverse(node.right)
 
@@ -183,9 +196,7 @@ class Solution:
             
             if currentNodeMatch or lFind or rFind:
                 return True
-            else:
-                return False
-
+        
         ans: TreeNode = None
 
         traverse(root)
@@ -193,24 +204,24 @@ class Solution:
         return ans
     
     def lcaStack(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-        nodeQueue = deque([root])
-        parentDict = {root: None}
+        nodeQ = deque([root])
+        parentDict: dict[TreeNode, TreeNode] = {root: None}
 
-        while nodeQueue:
-            curr = nodeQueue.popleft()
+        while nodeQ:
+            node = nodeQ.popleft()
 
-            if curr.left:
-                nodeQueue.append(curr.left)
-                parentDict[curr.left] = curr
+            if node.left:
+                nodeQ.append(node.left)
+                parentDict[node.left] = node
 
-            if curr.right:
-                nodeQueue.append(curr.right)
-                parentDict[curr.right] = curr
+            if node.right:
+                nodeQ.append(node.right)
+                parentDict[node.right] = node
 
             if p in parentDict and q in parentDict:
                 break
 
-        ancestors = set()
+        ancestors: set = set()
 
         while p:
             ancestors.add(p)
