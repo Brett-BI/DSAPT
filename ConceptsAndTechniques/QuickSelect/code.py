@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 
@@ -27,3 +28,31 @@ def partition(arr: List[int], low: int, high: int) -> int:
 def findElement(arr: List[int], k: int) -> int:
     # Use k - 1 because the prompt probably isn't for 0-based indexing
     return quickSelect(arr, 0, len(arr) - 1, k - 1)
+
+
+
+"""
+With duplicates:
+"""
+
+def quickSelectWithDups(arr: List[int], k: int) -> int:
+    # this splits the array and returns rather than using a partition() function
+    pivot = random.choice(arr)
+    left, mid, right = [], [], []
+
+    for num in arr:
+        if num > pivot:
+            left.append(num)
+        elif num < pivot:
+            right.append(num)
+        else:
+            mid.append(num)
+
+    if k <= len(left):
+        return quickSelectWithDups(left, k)
+    
+    if len(left) + len(mid) < k:
+        return quickSelectWithDups(right, k - len(left) - len(mid))
+    
+
+    return pivot

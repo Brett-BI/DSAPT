@@ -36,6 +36,23 @@ class Solution:
     # T: O(N^2)
     # S: O(N)
 
+    def iv(self, s: str) -> bool:
+        # this works just as well as a deque if you're only using pop() and append()
+        # because both of those operations are O(1); if you use anything with indexing,
+        # it's O(N)
+        stack = []
+        mapping = {")":"(", "}": "{", "]": "["}
+
+        for paren in s:
+            if paren in mapping:
+                element = stack.pop() if stack else "!"
+
+                if mapping[paren] != element:
+                    return False
+            else:
+                stack.append(paren)
+
+        return len(stack) == 0
 
 
 

@@ -10,16 +10,9 @@ from typing import List
 
 class Solution:
     def rangeSumBSTIterative(self, root: Optional[TreeNode], low: int, high: int) -> int:
-        # this is using a stack, essentially
-        s: List[TreeNode] = []
+        # this is using a queue, essentially
+        s: List[TreeNode] = [root]
         ans: int = 0
-
-        sum
-
-        if root:
-            s.append(root)
-
-        import heapq
 
         while s:
             currentNode = s.pop()

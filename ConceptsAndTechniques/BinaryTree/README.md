@@ -45,7 +45,7 @@ Balanced Binary Tree:
 - For every node, the difference in height between its left and right subtrees is at most 1.
 
 Binary Search Tree (BST):
-- A special type of binary tree where:
+- A special type of binary tree where the val of each node is greater than all of the values in the left subtree and less than the values in the right subtree:
     - The left child contains only values less than the node.
     - The right child contains only values greater than the node.
 
