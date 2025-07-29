@@ -27,6 +27,8 @@ class Solution:
                 node = node.right
             else:
                 return node
+
+        return root
             
     def lowestCommonAncestorRecursive(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
         """

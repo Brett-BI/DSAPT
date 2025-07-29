@@ -34,7 +34,7 @@ class Solution:
                     mid.append(num) # in case our num in also our pivot and all dups
 
             # left contains larger elements, so recurse with larger element list
-            # until we have our k largest elements
+            # until we have our k largest nmnm elements
             if k <= len(left):
                 return quickSelect(left, k)
             
